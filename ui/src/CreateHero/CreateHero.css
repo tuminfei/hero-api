@@ -1,0 +1,15 @@
+.form-field-container {
+  width: 50%;
+}
+
+.form-field {
+  display: flex;
+}
+
+.form-field-label {
+  width: 50%;
+}
+
+.form-field-input {
+  width: 50%;
+}

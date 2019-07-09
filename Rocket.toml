@@ -1,0 +1,10 @@
+[development]
+address = "0.0.0.0"
+port = 8000
+workers = 2
+keep_alive = 5
+log = "normal"
+limits = { forms = 32768 }
+
+#[global.databases]
+#my_db = { url = "mysql://hero:hero@localhost/hero" }
