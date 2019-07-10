@@ -20,6 +20,10 @@ use rocket::Rocket;
 extern crate diesel;
 //use rocket_contrib::databases::diesel;
 
+#[macro_use]
+extern crate log;
+extern crate env_logger;
+
 use rocket::http::Method;
 use rocket_contrib::json::{Json, JsonValue};
 use rocket_cors::{AllowedHeaders, AllowedOrigins};
@@ -32,6 +36,7 @@ mod people;
 mod hero;
 
 use settings::Settings;
+use log::Level;
 
 #[cfg(test)]
 mod tests;
@@ -85,5 +90,9 @@ fn rocket(settings: Settings) -> Rocket {
 fn main() {
     // dotenv().ok();
     let settings = Settings::new().unwrap();
+    let env = env_logger::Env::default()
+        .filter_or(env_logger::DEFAULT_FILTER_ENV, settings.log.filter.clone());
+    env_logger::Builder::from_env(env).init();
+
     rocket(settings).launch();
 }
