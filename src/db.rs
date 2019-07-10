@@ -5,6 +5,7 @@ use rocket::{Request, State, Outcome};
 use diesel::mysql::MysqlConnection;
 use diesel::r2d2::{ConnectionManager, Pool, PooledConnection};
 use std::env;
+use crate::settings::Database;
 
 // An alias to the type for a pool of Diesel Mysql Connection
 pub type MysqlPool = Pool<ConnectionManager<MysqlConnection>>;
@@ -15,8 +16,8 @@ fn database_url() -> String {
 }
 
 /// Initialize the database pool.
-pub fn connect() -> MysqlPool {
-    let manager = ConnectionManager::<MysqlConnection>::new(database_url());
+pub fn connect(database_config: &Database) -> MysqlPool {
+    let manager = ConnectionManager::<MysqlConnection>::new(database_config.database_url.clone());
     Pool::new(manager).expect("Failed to create pool")
 }
 

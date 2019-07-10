@@ -28,9 +28,13 @@ mod hero;
 mod schema;
 mod db;
 pub mod api;
+pub mod settings;
+mod people;
+
 
 use hero::{Hero, HeroPatch, HeroWithId};
-mod people;
+use settings::Settings;
+
 
 #[cfg(test)]
 mod tests;
@@ -82,7 +86,7 @@ fn delete(conn: db::Connection, id: i32) -> Json<JsonValue> {
     }))
 }
 
-fn rocket() -> Rocket {
+fn rocket(settings: Settings) -> Rocket {
     let (allowed_origins, failed_origins) = AllowedOrigins::some(&["http://localhost:3000"]);
     assert!(failed_origins.is_empty());
     let options = rocket_cors::Cors {
@@ -104,7 +108,7 @@ fn rocket() -> Rocket {
     };
 
     rocket::ignite()
-        .manage(db::connect())
+        .manage(db::connect(&settings.database))
         .mount(
             "/hero",
             routes![create, update, delete, get_bulk, get_detail, patch],
@@ -114,7 +118,8 @@ fn rocket() -> Rocket {
 }
 
 fn main() {
-    dotenv().ok();
+    // dotenv().ok();
+    let settings = Settings::new().unwrap();
     people::router::create_routes();
-    rocket().launch();
+    rocket(settings).launch();
 }

@@ -1,0 +1,10 @@
+[database]
+database_url= "mysql://root@127.0.0.1:3306/hero-dev-api"
+
+[auth]
+secret= "herohero"
+issuer= "herohero"
+expiry= 2400
+
+[log]
+filter= "hero-api"
