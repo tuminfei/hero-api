@@ -28,6 +28,7 @@ mod hero;
 mod schema;
 mod db;
 use hero::{Hero, HeroPatch, HeroWithId};
+mod people;
 
 #[cfg(test)]
 mod tests;
@@ -112,5 +113,6 @@ fn rocket() -> Rocket {
 
 fn main() {
     dotenv().ok();
+    people::router::create_routes();
     rocket().launch();
 }
