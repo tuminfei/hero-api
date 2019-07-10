@@ -31,10 +31,7 @@ pub mod settings;
 mod people;
 mod hero;
 
-
-use hero::{Hero, HeroPatch, HeroWithId};
 use settings::Settings;
-
 
 #[cfg(test)]
 mod tests;
