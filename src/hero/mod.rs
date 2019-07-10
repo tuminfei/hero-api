@@ -1,16 +1,16 @@
+#![allow(proc_macro_derive_resolution_fallback)]
 use diesel;
 use diesel::mysql::MysqlConnection;
 use diesel::prelude::*;
 use diesel::result::Error as DieselError;
-
-use rocket::response::status;
 use rocket_contrib::json::{Json, JsonValue};
+use crate::api::errors::handlers;
+
+pub mod handler;
 
 use super::schema;
 use schema::hero;
-use super::api::errors::handlers;
 
-// gotta have 2 structs, one for input, one for persistence: https://github.com/diesel-rs/diesel/issues/1440#issuecomment-354573185
 #[derive(AsChangeset, Serialize, Deserialize, Debug, Queryable)]
 #[table_name = "hero"]
 pub struct HeroWithId {

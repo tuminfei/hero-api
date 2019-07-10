@@ -7,7 +7,6 @@ use rocket_contrib::json::{Json, JsonValue};
 use crate::api::errors::handlers;
 
 pub mod handler;
-pub mod router;
 
 use super::schema;
 use schema::people;

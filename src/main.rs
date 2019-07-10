@@ -24,12 +24,12 @@ use rocket::http::Method;
 use rocket_contrib::json::{Json, JsonValue};
 use rocket_cors::{AllowedHeaders, AllowedOrigins};
 
-mod hero;
 mod schema;
 mod db;
 pub mod api;
 pub mod settings;
 mod people;
+mod hero;
 
 
 use hero::{Hero, HeroPatch, HeroWithId};
@@ -44,47 +44,7 @@ fn hello() -> &'static str {
     "Hello, world!"
 }
 
-#[post("/", data = "<hero>")]
-fn create(conn: db::Connection, hero: Json<Hero>) -> Json<JsonValue> {
-    let insert = Hero {
-        ..hero.into_inner()
-    };
-    Hero::create(&conn, &insert)
-}
 
-#[get("/")]
-fn get_bulk(conn: db::Connection) -> Json<JsonValue> {
-    Json(json!(Hero::get_bulk(&conn)))
-}
-
-#[get("/<id>")]
-fn get_detail(conn: db::Connection, id: i32) -> Json<JsonValue> {
-    Hero::get_detail(&conn, id)
-}
-
-#[put("/<id>", data = "<hero>")]
-fn update(conn: db::Connection, id: i32, hero: Json<HeroWithId>) -> Json<JsonValue> {
-    // TODO should they be updating *with* ID?
-    let update = HeroWithId {
-        ..hero.into_inner()
-    };
-    Hero::update(&conn, id, update)
-}
-
-#[patch("/<id>", data = "<hero>")]
-fn patch(conn: db::Connection, id: i32, hero: Json<HeroPatch>) -> Json<JsonValue> {
-    let update = HeroPatch {
-        ..hero.into_inner()
-    };
-    Hero::patch(&conn, id, update)
-}
-
-#[delete("/<id>")]
-fn delete(conn: db::Connection, id: i32) -> Json<JsonValue> {
-    Json(json!({
-        "success": Hero::delete(&conn, id)
-    }))
-}
 
 fn rocket(settings: Settings) -> Rocket {
     let (allowed_origins, failed_origins) = AllowedOrigins::some(&["http://localhost:3000"]);
@@ -109,17 +69,24 @@ fn rocket(settings: Settings) -> Rocket {
 
     rocket::ignite()
         .manage(db::connect(&settings.database))
-        .mount(
-            "/hero",
-            routes![create, update, delete, get_bulk, get_detail, patch],
-        )
         .mount("/", routes![hello])
+        .mount("/hero",
+               routes![hero::handler::create,
+               hero::handler::update,
+               hero::handler::delete,
+               hero::handler::get_bulk,
+               hero::handler::get_detail,
+               hero::handler::patch],
+        )
+        .mount("/people",
+               routes![people::handler::all,
+                    people::handler::create],
+        )
         .attach(options)
 }
 
 fn main() {
     // dotenv().ok();
     let settings = Settings::new().unwrap();
-    people::router::create_routes();
     rocket(settings).launch();
 }
