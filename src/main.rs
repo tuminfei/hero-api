@@ -27,6 +27,8 @@ use rocket_cors::{AllowedHeaders, AllowedOrigins};
 mod hero;
 mod schema;
 mod db;
+pub mod api;
+
 use hero::{Hero, HeroPatch, HeroWithId};
 mod people;
 

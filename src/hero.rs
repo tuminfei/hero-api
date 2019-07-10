@@ -8,6 +8,7 @@ use rocket_contrib::json::{Json, JsonValue};
 
 use super::schema;
 use schema::hero;
+use super::api::errors::handlers;
 
 // gotta have 2 structs, one for input, one for persistence: https://github.com/diesel-rs/diesel/issues/1440#issuecomment-354573185
 #[derive(AsChangeset, Serialize, Deserialize, Debug, Queryable)]
@@ -41,21 +42,6 @@ pub struct HeroPatch {
     pub image_url: Option<String>,
 }
 
-fn get_status_code_from_diesel_err(e: DieselError) -> i32 {
-    if e == DieselError::NotFound {
-        404
-    } else {
-        400
-    }
-}
-
-fn diesel_err_to_json(e: DieselError) -> Json<JsonValue> {
-    Json(json!({
-        "error": e.to_string(),
-        "status_code": get_status_code_from_diesel_err(e),
-    }))
-}
-
 impl Hero {
     fn get_most_recently_created_hero(connection: &diesel::MysqlConnection) -> HeroWithId {
         hero::table
@@ -73,7 +59,7 @@ impl Hero {
             .values(h)
             .execute(connection)
             .map_or_else(
-                |e| diesel_err_to_json(e),
+                |e| handlers::diesel_err_to_json(e),
                 |res| Json(json!(Hero::get_most_recently_created_hero(connection))),
             )
     }
@@ -86,7 +72,7 @@ impl Hero {
     }
 
     pub fn get_detail(connection: &MysqlConnection, id: i32) -> Json<JsonValue> {
-        Hero::find_by_id(connection, id).map_or_else(|e| diesel_err_to_json(e), |h| Json(json!(h)))
+        Hero::find_by_id(connection, id).map_or_else(|e| handlers::diesel_err_to_json(e), |h| Json(json!(h)))
     }
 
     pub fn update(connection: &MysqlConnection, id: i32, h: HeroWithId) -> Json<JsonValue> {
@@ -94,7 +80,7 @@ impl Hero {
             .set(&h)
             .execute(connection)
             .map_or_else(
-                |e| diesel_err_to_json(e),
+                |e| handlers::diesel_err_to_json(e),
                 |extant| Hero::get_detail(connection, id),
             )
     }
@@ -133,7 +119,7 @@ impl Hero {
 
     pub fn patch(connection: &MysqlConnection, id: i32, h: HeroPatch) -> Json<JsonValue> {
         Hero::find_by_id(connection, id).map_or_else(
-            |e| diesel_err_to_json(e),
+            |e| handlers::diesel_err_to_json(e),
             |extant| Hero::do_patch(connection, id, h, extant),
         )
     }
