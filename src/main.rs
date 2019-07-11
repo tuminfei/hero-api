@@ -37,6 +37,7 @@ mod hero;
 
 use settings::Settings;
 use log::Level;
+use api::errors::handlers::*;
 
 #[cfg(test)]
 mod tests;
@@ -84,6 +85,14 @@ fn rocket(settings: Settings) -> Rocket {
                routes![people::handler::all,
                     people::handler::create],
         )
+        .register(catchers![
+            not_found,
+            unauthenticated,
+            unauthorized,
+            bad_request,
+            unprocessable_entity,
+            internal_server_error
+        ])
         .attach(options)
 }
 
