@@ -7,6 +7,11 @@ pub struct Database {
 }
 
 #[derive(Debug, Deserialize)]
+pub struct App {
+    pub allowed_origins: String,
+}
+
+#[derive(Debug, Deserialize)]
 pub struct Auth {
     pub secret: String,
     pub issuer: String,
@@ -23,6 +28,7 @@ pub struct Settings {
     pub database: Database,
     pub auth: Auth,
     pub log: Log,
+    pub app: App,
 }
 
 impl Settings {

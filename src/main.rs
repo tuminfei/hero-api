@@ -50,7 +50,8 @@ fn hello() -> &'static str {
 
 
 fn rocket(settings: Settings) -> Rocket {
-    let (allowed_origins, failed_origins) = AllowedOrigins::some(&["http://localhost:3000"]);
+    let allowed_origins = &settings.app.allowed_origins.clone();
+    let (allowed_origins, failed_origins) = AllowedOrigins::some(&[allowed_origins]);
     assert!(failed_origins.is_empty());
     let options = rocket_cors::Cors {
         allowed_origins,
