@@ -2,7 +2,7 @@
 database_url= "mysql://root@127.0.0.1:3306/hero-dev-api"
 
 [app]
-allowed_origins= "http://localhost:8000"
+allowed_origins= "http://localhost:3000"
 
 [auth]
 secret= "herohero"
