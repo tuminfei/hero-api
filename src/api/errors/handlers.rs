@@ -22,6 +22,13 @@ pub fn diesel_err_to_json(e: DieselError) -> Json<JsonValue> {
     }))
 }
 
+pub fn error_status(error: DieselError) -> Status {
+    match error {
+        DieselError::NotFound => Status::NotFound,
+        _ => Status::InternalServerError
+    }
+}
+
 #[catch(400)]
 pub fn bad_request(req: &Request) -> Json<ErrorWrapper> {
     let date = Local::now();

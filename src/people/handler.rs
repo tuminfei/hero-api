@@ -1,18 +1,13 @@
-use crate::db::Connection;
-use diesel::result::Error;
-use std::env;
-use crate::schema::people;
-use super::Person;
 use rocket::http::Status;
 use rocket::response::status;
 use rocket_contrib::json::{Json, JsonValue};
+use diesel::result::Error;
+use std::env;
 
-fn error_status(error: Error) -> Status {
-    match error {
-        Error::NotFound => Status::NotFound,
-        _ => Status::InternalServerError
-    }
-}
+use crate::db::Connection;
+use crate::schema::people;
+use super::Person;
+use crate::api::errors::handlers;
 
 #[post("/", data = "<person>")]
 pub fn create(conn: Connection, person: Json<Person>) -> Json<JsonValue> {
@@ -26,5 +21,5 @@ pub fn create(conn: Connection, person: Json<Person>) -> Json<JsonValue> {
 pub fn all(connection: Connection) -> Result<Json<Vec<Person>>, Status> {
     super::all(&connection)
         .map(|people| Json(people))
-        .map_err(|error| error_status(error))
+        .map_err(|error| handlers::error_status(error))
 }
