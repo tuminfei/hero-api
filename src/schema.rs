@@ -10,6 +10,14 @@ table! {
 }
 
 table! {
+    login_history (id) {
+        id -> Integer,
+        user_id -> Integer,
+        login_timestamp -> Timestamp,
+    }
+}
+
+table! {
     people (id) {
         id -> Integer,
         first_name -> Varchar,
@@ -20,7 +28,19 @@ table! {
     }
 }
 
+table! {
+    users (id) {
+        id -> Integer,
+        username -> Varchar,
+        email -> Varchar,
+        password -> Varchar,
+        login_session -> Varchar,
+    }
+}
+
 allow_tables_to_appear_in_same_query!(
     hero,
+    login_history,
     people,
+    users,
 );

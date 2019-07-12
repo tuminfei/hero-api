@@ -1,11 +1,12 @@
-use crate::db::Connection;
 use diesel::result::Error;
 use std::env;
-use crate::schema::hero;
 use rocket::http::Status;
 use rocket::response::status;
 use rocket_contrib::json::{Json, JsonValue};
-use crate::hero::{Hero, HeroPatch, HeroWithId};
+
+use crate::db::Connection;
+use crate::schema::hero;
+use crate::models::hero::{Hero, HeroPatch, HeroWithId};
 
 #[post("/", data = "<hero>")]
 pub fn create(conn: Connection, hero: Json<Hero>) -> Json<JsonValue> {
@@ -48,6 +49,3 @@ pub fn delete(conn: Connection, id: i32) -> Json<JsonValue> {
         "success": Hero::delete(&conn, id)
     }))
 }
-
-
-

@@ -12,6 +12,7 @@ extern crate rocket_contrib;
 extern crate serde_derive;
 extern crate rocket_cors;
 extern crate dotenv;
+extern crate chrono;
 use dotenv::dotenv;
 use rocket::Rocket;
 
@@ -30,10 +31,12 @@ use rocket_cors::{AllowedHeaders, AllowedOrigins};
 
 mod schema;
 mod db;
+mod jwt;
 pub mod api;
 pub mod settings;
+pub mod constants;
+pub mod models;
 mod people;
-mod hero;
 
 use settings::Settings;
 use log::Level;
@@ -74,13 +77,16 @@ fn rocket(settings: Settings) -> Rocket {
     rocket::ignite()
         .manage(db::connect(&settings.database))
         .mount("/", routes![hello])
+        .mount("/user/auth",
+               routes![api::controllers::user_controller::login,
+               api::controllers::user_controller::signup])
         .mount("/hero",
-               routes![hero::handler::create,
-               hero::handler::update,
-               hero::handler::delete,
-               hero::handler::get_bulk,
-               hero::handler::get_detail,
-               hero::handler::patch],
+               routes![api::controllers::hero_controller::create,
+               api::controllers::hero_controller::update,
+               api::controllers::hero_controller::delete,
+               api::controllers::hero_controller::get_bulk,
+               api::controllers::hero_controller::get_detail,
+               api::controllers::hero_controller::patch],
         )
         .mount("/people",
                routes![people::handler::all,
