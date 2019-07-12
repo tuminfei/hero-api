@@ -22,9 +22,7 @@ pub struct Person {
     pub salary: i32,
 }
 
-pub fn all(connection: &diesel::MysqlConnection) -> QueryResult<Vec<Person>> {
-    people::table.load::<Person>(&*connection)
-}
+
 
 impl Person {
     fn get_most_recently_created_person(connection: &diesel::MysqlConnection) -> Person {
@@ -32,6 +30,10 @@ impl Person {
             .order(people::id.desc())
             .first(connection)
             .unwrap()
+    }
+
+    pub fn all(connection: &diesel::MysqlConnection) -> QueryResult<Vec<Person>> {
+        people::table.load::<Person>(&*connection)
     }
 
     pub fn create(connection: &diesel::MysqlConnection, p: &Person) -> Json<JsonValue>{
