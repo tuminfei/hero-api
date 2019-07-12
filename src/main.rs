@@ -36,7 +36,6 @@ pub mod api;
 pub mod settings;
 pub mod constants;
 pub mod models;
-mod people;
 
 use settings::Settings;
 use log::Level;
@@ -89,8 +88,8 @@ fn rocket(settings: Settings) -> Rocket {
                api::controllers::hero_controller::patch],
         )
         .mount("/people",
-               routes![people::handler::all,
-                    people::handler::create],
+               routes![api::controllers::people_controller::all,
+                    api::controllers::people_controller::create],
         )
         .register(catchers![
             not_found,

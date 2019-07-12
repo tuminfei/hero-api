@@ -6,7 +6,7 @@ use std::env;
 
 use crate::db::Connection;
 use crate::schema::people;
-use super::Person;
+use crate::models::people::Person;
 use crate::api::errors::handlers;
 
 #[post("/", data = "<person>")]

@@ -4,11 +4,9 @@ use diesel::mysql::MysqlConnection;
 use diesel::prelude::*;
 use diesel::result::Error as DieselError;
 use rocket_contrib::json::{Json, JsonValue};
+
 use crate::api::errors::handlers;
-
-pub mod handler;
-
-use super::schema;
+use crate::schema;
 use schema::people;
 
 #[derive(Queryable, AsChangeset, Serialize, Deserialize, Insertable)]
