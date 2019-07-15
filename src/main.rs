@@ -91,6 +91,10 @@ fn rocket(settings: Settings) -> Rocket {
                routes![api::controllers::people_controller::all,
                     api::controllers::people_controller::create],
         )
+        .mount(
+            "/api/people_auth",
+            routes![api::controllers::people_auth_controller::find_all],
+        )
         .register(catchers![
             not_found,
             unauthenticated,

@@ -1,10 +1,11 @@
 use diesel;
 use diesel::mysql::MysqlConnection;
+use rocket::http::Status;
+
 use crate::constants::message_constants;
 use crate::jwt;
 use crate::models::response::{Response, ResponseWithStatus};
 use crate::models::user::{LoginDTO, User, UserDTO};
-use rocket::http::Status;
 
 pub fn signup(user: UserDTO, connection: &MysqlConnection) -> ResponseWithStatus {
     if User::signup(user, &connection) {

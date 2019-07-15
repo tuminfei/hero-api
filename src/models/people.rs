@@ -7,7 +7,9 @@ use rocket_contrib::json::{Json, JsonValue};
 
 use crate::api::errors::handlers;
 use crate::schema;
+
 use schema::people;
+use people::columns::id;
 
 #[derive(Queryable, AsChangeset, Serialize, Deserialize, Insertable)]
 #[table_name = "people"]
@@ -28,6 +30,10 @@ impl Person {
             .order(people::id.desc())
             .first(connection)
             .unwrap()
+    }
+
+    pub fn find_all(conn: &diesel::MysqlConnection) -> Vec<Person> {
+        people::table.order(id.asc()).load::<Person>(conn).unwrap()
     }
 
     pub fn all(connection: &diesel::MysqlConnection) -> QueryResult<Vec<Person>> {
