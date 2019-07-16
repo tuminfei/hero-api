@@ -50,7 +50,6 @@ fn hello() -> &'static str {
 }
 
 
-
 fn rocket(settings: Settings) -> Rocket {
     let allowed_origins = &settings.app.allowed_origins.clone();
     let (allowed_origins, failed_origins) = AllowedOrigins::some(&[allowed_origins]);
@@ -112,6 +111,6 @@ fn main() {
     let env = env_logger::Env::default()
         .filter_or(env_logger::DEFAULT_FILTER_ENV, settings.log.filter.clone());
     env_logger::Builder::from_env(env).init();
-
     rocket(settings).launch();
 }
+
