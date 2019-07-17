@@ -23,7 +23,7 @@ extern crate diesel;
 
 #[macro_use]
 extern crate log;
-extern crate env_logger;
+use flexi_logger::{Logger, opt_format};
 
 use rocket::http::Method;
 use rocket_contrib::json::{Json, JsonValue};
@@ -108,9 +108,12 @@ fn rocket(settings: Settings) -> Rocket {
 fn main() {
     // dotenv().ok();
     let settings = Settings::new().unwrap();
-    let env = env_logger::Env::default()
-        .filter_or(env_logger::DEFAULT_FILTER_ENV, settings.log.filter.clone());
-    env_logger::Builder::from_env(env).init();
+    Logger::with_env_or_str("info")
+        .log_to_file()
+        .directory("log_files")
+        .format(opt_format)
+        .start()
+        .unwrap();
     rocket(settings).launch();
 }
 
