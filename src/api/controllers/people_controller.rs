@@ -18,8 +18,8 @@ pub fn create(conn: Connection, person: Json<Person>) -> Json<JsonValue> {
 }
 
 #[get("/")]
-pub fn all(connection: Connection) -> Result<Json<Vec<Person>>, Status> {
-    Person::all(&connection)
+pub fn all(conn: Connection) -> Result<Json<Vec<Person>>, Status> {
+    Person::all(&conn)
         .map(|people| Json(people))
         .map_err(|error| handlers::error_status(error))
 }
