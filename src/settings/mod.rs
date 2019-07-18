@@ -7,6 +7,11 @@ pub struct Database {
 }
 
 #[derive(Debug, Deserialize)]
+pub struct Redis {
+    pub redis_address: String,
+}
+
+#[derive(Debug, Deserialize)]
 pub struct App {
     pub allowed_origins: String,
 }
@@ -26,6 +31,7 @@ pub struct Log {
 #[derive(Debug, Deserialize)]
 pub struct Settings {
     pub database: Database,
+    pub redis: Redis,
     pub auth: Auth,
     pub log: Log,
     pub app: App,

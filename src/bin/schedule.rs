@@ -1,10 +1,31 @@
 extern crate schedule;
 extern crate chrono;
+extern crate hero_lib;
 
 use schedule::{Agenda, Job};
 use chrono::prelude::*;
 
+use hero_lib::dbs::redis::pool;
+use hero_lib::dbs::redis::RedisConnection;
+use hero_lib::settings::Settings;
+use r2d2_redis::{redis};
+use std::ops::Deref;
+
 fn main() {
+
+    let settings = Settings::new().unwrap();
+    println!("{:?}", settings);
+
+    let pool = pool(settings.redis);
+    let conn = pool.get().unwrap();
+
+    let reply = redis::cmd("PING").query::<String>(conn.deref()).unwrap();
+    // Alternatively, without deref():
+    // let reply = redis::cmd("PING").query::<String>(&*conn).unwrap();
+    println!("{:?}", reply);
+    assert_eq!("PONG", reply);
+
+
     let mut a = Agenda::new();
 
     // Run every second

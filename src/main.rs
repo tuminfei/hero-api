@@ -13,6 +13,7 @@ extern crate serde_derive;
 extern crate rocket_cors;
 extern crate dotenv;
 extern crate chrono;
+extern crate hero_lib;
 use dotenv::dotenv;
 use rocket::Rocket;
 
@@ -30,16 +31,16 @@ use rocket_contrib::json::{Json, JsonValue};
 use rocket_cors::{AllowedHeaders, AllowedOrigins};
 
 mod schema;
-mod db;
+
 mod jwt;
 pub mod api;
-pub mod settings;
-pub mod constants;
 pub mod models;
 
-use settings::Settings;
 use log::Level;
 use api::errors::handlers::*;
+use hero_lib::dbs::mysql;
+use hero_lib::settings::Settings;
+
 
 #[cfg(test)]
 mod tests;
@@ -73,7 +74,7 @@ fn rocket(settings: Settings) -> Rocket {
     };
 
     rocket::ignite()
-        .manage(db::connect(&settings.database))
+        .manage(mysql::connect(&settings.database))
         .mount("/", routes![hello])
         .mount("/user/auth",
                routes![api::controllers::user_controller::login,

@@ -1,8 +1,3 @@
-use crate::db::Connection;
-use crate::constants::message_constants;
-use crate::models::response::Response;
-use crate::models::user::{ User, LoginInfoDTO };
-
 use jsonwebtoken::errors::Result;
 use jsonwebtoken::TokenData;
 use jsonwebtoken::{Header, Validation};
@@ -11,6 +6,11 @@ use rocket::outcome::Outcome;
 use rocket::request::{self, FromRequest, Request};
 use rocket::response::status;
 use rocket_contrib::json::Json;
+use hero_lib::dbs::mysql::Connection;
+use hero_lib::constants::message_constants;
+
+use crate::models::response::Response;
+use crate::models::user::{ User, LoginInfoDTO };
 
 static KEY: &'static [u8; 16] = include_bytes!("secret.key");
 static ONE_WEEK: i64 = 60 * 60 * 24 * 7;

@@ -1,11 +1,11 @@
-use crate::db::Connection;
-use crate::models::response::Response;
-use crate::models::user::{LoginDTO, UserDTO};
-use crate::api::repo::user_repo;
-
 use rocket::http::Status;
 use rocket::response::status;
 use rocket_contrib::json::Json;
+use hero_lib::dbs::mysql::Connection;
+
+use crate::models::response::Response;
+use crate::models::user::{LoginDTO, UserDTO};
+use crate::api::repo::user_repo;
 
 #[post("/signup", format = "json", data = "<user>")]
 pub fn signup(user: Json<UserDTO>, conn: Connection) -> status::Custom<Json<Response>> {

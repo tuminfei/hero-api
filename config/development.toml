@@ -1,6 +1,9 @@
 [database]
 database_url= "mysql://root@127.0.0.1:3306/hero-dev-api"
 
+[redis]
+redis_address= "redis://127.0.0.1:6379"
+
 [app]
 allowed_origins= "http://localhost:3000"
 

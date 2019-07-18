@@ -3,8 +3,8 @@ use rocket::response::status;
 use rocket_contrib::json::{Json, JsonValue};
 use diesel::result::Error;
 use std::env;
+use hero_lib::dbs::mysql::Connection;
 
-use crate::db::Connection;
 use crate::schema::people;
 use crate::models::people::Person;
 use crate::api::errors::handlers;

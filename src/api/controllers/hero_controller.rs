@@ -3,8 +3,8 @@ use std::env;
 use rocket::http::Status;
 use rocket::response::status;
 use rocket_contrib::json::{Json, JsonValue};
+use hero_lib::dbs::mysql::Connection;
 
-use crate::db::Connection;
 use crate::schema::hero;
 use crate::models::hero::{Hero, HeroPatch, HeroWithId};
 

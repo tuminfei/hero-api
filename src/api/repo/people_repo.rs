@@ -1,8 +1,8 @@
 use diesel;
 use diesel::mysql::MysqlConnection;
 use rocket::http::Status;
+use hero_lib::constants::message_constants;
 
-use crate::constants::message_constants;
 use crate::jwt;
 use crate::models::response::{Response, ResponseWithStatus};
 use crate::models::people::{Person};

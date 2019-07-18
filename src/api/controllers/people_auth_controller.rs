@@ -2,8 +2,8 @@ use rocket::http::RawStr;
 use rocket::http::Status;
 use rocket::response::status;
 use rocket_contrib::json::Json;
+use hero_lib::dbs::mysql::Connection;
 
-use crate::db::Connection;
 use crate::jwt::UserToken;
 use crate::schema::people;
 use crate::api::repo::people_repo;
