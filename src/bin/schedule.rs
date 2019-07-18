@@ -6,9 +6,8 @@ use schedule::{Agenda, Job};
 use chrono::prelude::*;
 
 use hero_lib::dbs::redis::pool;
-use hero_lib::dbs::redis::RedisConnection;
 use hero_lib::settings::Settings;
-use r2d2_redis::{redis};
+use r2d2_redis::redis;
 use std::ops::Deref;
 
 fn main() {
@@ -24,7 +23,6 @@ fn main() {
     // let reply = redis::cmd("PING").query::<String>(&*conn).unwrap();
     println!("{:?}", reply);
     assert_eq!("PONG", reply);
-
 
     let mut a = Agenda::new();
 
