@@ -1,35 +1,23 @@
 [package]
-name = "hero-api"
+name = "jobs"
 version = "0.1.0"
-authors = ["Kevin Chen <kevinmichaelchen@gmail.com>"]
+authors = ["tarzansos <tuminfei1981@gmail.com>"]
 edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [lib]
 name = "hero_lib"
-path = "src/lib.rs"
-
-[[bin]]
-name = "schedule"
-path = "src/bin/schedule.rs"
-
-[workspace]
-members = [
-    "jobs",
-]
+path = "../src/lib.rs"
 
 [dependencies]
 rocket = "0.4.2"
 #rocket-accept-language = "0.3.0"
 serde = "1.0"
-serde_json = "1.0"
 serde_derive = "1.0"
 diesel = { version = "1.0.0", features = ["mysql", "r2d2", "chrono"] }
-dotenv = "0.10"
 chrono = { version = "0.4", features = ["serde"] }
 config = "0.9.3"
-jsonwebtoken = "5.0.1"
-bcrypt = "0.5.0"
-time = "0.1.42"
 redis = "0.9.0"
 r2d2 = "*"
 r2d2_redis = "0.9.0"
@@ -37,22 +25,8 @@ r2d2_redis = "0.9.0"
 #schedule
 schedule = "0.1.0"
 
-#log
-flexi_logger = "^0.13.3"
-log = "0.4"
-
 [dependencies.rocket_contrib]
 version = "*"
 default-features = false
 features = ["json", "diesel_mysql_pool"]
 
-[dependencies.rocket_cors]
-version = "0.4.0"
-default-features = false
-
-[dependencies.uuid]
-version = "0.7.4"
-features = ["v4"]
-
-[build-dependencies]
-vergen = "3"
